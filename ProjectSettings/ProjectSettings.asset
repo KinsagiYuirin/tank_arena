@@ -876,11 +876,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: bebb044d-6d35-4b68-9616-11a94db8ad55
+  cloudProjectId: 4266bc11-a2fa-4ccf-9b64-4373d502cdd1
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: week3 (3)
-  organizationId: unity_uxfr5ydpksq9kw
+  projectName: tank_arena
+  organizationId: yuirin
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
