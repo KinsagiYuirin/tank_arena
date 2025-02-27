@@ -365,8 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32598dd9d8cd965489abe84ba0279e7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyNameText: {fileID: 0}
-  lobbyPlayersText: {fileID: 0}
+  lobbyNameText: {fileID: 901854850806305991}
+  lobbyPlayersText: {fileID: 5633733710500038279}
 --- !u!1 &7071330413651571808
 GameObject:
   m_ObjectHideFlags: 0
