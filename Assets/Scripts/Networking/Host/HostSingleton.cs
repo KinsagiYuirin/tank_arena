@@ -35,6 +35,6 @@ public class HostSingleton : MonoBehaviour
     
     private void OnDestroy()
     {
-        GameManager?.Dispoese();
+        GameManager?.Dispose();
     }
 }
