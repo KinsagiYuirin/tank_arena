@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 8010341684303271936}
   - component: {fileID: 5655051103050074782}
   - component: {fileID: 4061514124697223009}
+  - component: {fileID: 54654291057218296}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -616,6 +617,31 @@ MonoBehaviour:
         byte0027: 0
         byte0028: 0
         byte0029: 0
+  PlayerColorIndex:
+    m_InternalValue: 0
+--- !u!114 &54654291057218296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973479528774297200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9075dd567128107488e6b46accf0a8c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 4061514124697223009}
+  playerSprite:
+  - {fileID: 871735929795424963}
+  - {fileID: 1430362387597305664}
+  tankColor:
+  - {r: 0.16470589, g: 0.50980395, b: 1, a: 1}
+  - {r: 1, g: 0.9490197, b: 0, a: 1}
+  - {r: 1, g: 0.16470589, b: 0.83921576, a: 1}
+  - {r: 0.9176471, g: 0.16470589, b: 0.20784315, a: 1}
+  - {r: 0.19607845, g: 0.69803923, b: 0, a: 1}
+  colorIndex: 0
 --- !u!1 &2588825991089214736
 GameObject:
   m_ObjectHideFlags: 0
