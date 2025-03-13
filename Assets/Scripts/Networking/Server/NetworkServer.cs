@@ -72,6 +72,9 @@ public class NetworkServer : IDisposable
         //Debug.Log(userData.userName);
         
         response.Approved = true;
+        response.Position = SpawnPoint.GetRandomSpawnPos();
+        response.Rotation = Quaternion.identity;
         response.CreatePlayerObject = true;
+        
     }
 }
