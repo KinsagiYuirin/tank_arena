@@ -10,6 +10,20 @@ public class NetworkServer : IDisposable
     private Dictionary<ulong, string> clientIdToAuth = new Dictionary<ulong, string>();
     private Dictionary<string, UserData> authIdToUserData = new Dictionary<string, UserData>();
 
+    public UserData GetUserDataByClientId(ulong clientId)
+    {
+        if (clientIdToAuth.TryGetValue(clientId, out string authId))
+        {
+            if (authIdToUserData.TryGetValue(authId, out UserData data))
+            {
+                return data;
+            }
+            return null;
+        }
+
+        return null;
+    }
+    
     public void Dispose()
     {
         if (networkManager == null) { return; }
