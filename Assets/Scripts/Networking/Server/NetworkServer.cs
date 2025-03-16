@@ -29,8 +29,8 @@ public class NetworkServer : IDisposable
         if (networkManager == null) { return; }
         
         networkManager.ConnectionApprovalCallback -= ApprovalCheck;
-        networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
         networkManager.OnServerStarted -= OnNetworkReady;
+        networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
 
         if (networkManager.IsListening)
         {
@@ -48,7 +48,7 @@ public class NetworkServer : IDisposable
     
     private void OnNetworkReady()
     {
-        networkManager.OnClientConnectedCallback += OnClientDisconnect;
+        networkManager.OnClientDisconnectCallback += OnClientDisconnect;
     }
     
     private void OnClientDisconnect(ulong clientId)

@@ -30,6 +30,8 @@ public class TankPlayer : NetworkBehaviour
 
             PlayerName.Value = userData.userName;
             PlayerColorIndex.Value = userData.userColorIndex;
+            
+            OnPlayerSpawned?.Invoke(this);
         }
         
         if (IsOwner)

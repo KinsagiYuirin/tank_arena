@@ -6,20 +6,19 @@ using UnityEngine.Rendering.VirtualTexturing;
 public class RespawnHandler : NetworkBehaviour
 {
     [SerializeField] private NetworkObject playerPrefab;
-
     public override void OnNetworkSpawn()
     {
-        if (!IsServer) { return; }
+        if(!IsServer) { return; }
         TankPlayer[] players = FindObjectsByType<TankPlayer>(FindObjectsSortMode.None);
-        foreach (TankPlayer player in players)
+        foreach(TankPlayer player in players)
         {
             HandlePlayerSpawned(player);
         }
-
+        
         TankPlayer.OnPlayerSpawned += HandlePlayerSpawned;
         TankPlayer.OnPlayerDespawned += HandlePlayerDespawned;
     }
-
+    
     public override void OnNetworkDespawn()
     {
         if (!IsServer) { return; }
@@ -27,22 +26,29 @@ public class RespawnHandler : NetworkBehaviour
         TankPlayer.OnPlayerDespawned -= HandlePlayerDespawned;
     }
     
-    private void HandlePlayerSpawned(TankPlayer players)
+    private void HandlePlayerSpawned(TankPlayer player)
     {
-        players.Health.OnDie += (health) => HandlePlayerDie(player);
+        player.Health.OnDie += (health) => HandlePlayerDie(player);
     }
-    private void HandlePlayerDespawned(TankPlayer players)
+    
+    private void HandlePlayerDespawned(TankPlayer player)
     {
-        
+        player.Health.OnDie -= (health) => HandlePlayerDie(player);
     }
+
     private void HandlePlayerDie(TankPlayer player)
     {
         Destroy(player.gameObject);
+        
         StartCoroutine(RespawnPlayer(player.OwnerClientId));
     }
-
+    
     private IEnumerator RespawnPlayer(ulong ownerClientId)
     {
-        throw new System.NotImplementedException();
+        yield return null;
+        
+        NetworkObject playerInstance = Instantiate(
+            playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
+        playerInstance.SpawnAsPlayerObject(ownerClientId);
     }
 }
