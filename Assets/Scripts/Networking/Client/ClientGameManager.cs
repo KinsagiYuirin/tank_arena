@@ -18,6 +18,11 @@ public class ClientGameManager : IDisposable
     
     private const string MenuSceneName = "Menu";
     
+    public void Disconnect()
+    {
+        networkClient?.Disconnect();
+    }
+    
     public void Dispose()
     {
         networkClient?.Dispose();
