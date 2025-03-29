@@ -17,14 +17,21 @@ using UnityEngine.SceneManagement;
 public class HostGameManager : IDisposable
 {
     private Allocation allocation;
-    private string joinCode;
+    private NetworkObject playerPrefab;
+    
     private string lobbyId;
+    public string JoinCode { get; private set; }
 
     public NetworkServer NetworkServer { get; private set; }
     
     private const int MaxConnections = 20;
     private const string GameSceneName = "Game";
-    private const string JoinCodeKey = "JoinCode";
+
+    public HostGameManager(NetworkObject playerPrefab)
+    {
+        this.playerPrefab = playerPrefab;
+    }
+
 
     public void Dispose()
     {
@@ -66,9 +73,8 @@ public class HostGameManager : IDisposable
         }
         try
         {
-            joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            Debug.Log(joinCode);
-            PlayerPrefs.SetString(JoinCodeKey, joinCode);
+            JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            Debug.Log(JoinCode);
         }
         catch (Exception e)
         {
@@ -90,7 +96,7 @@ public class HostGameManager : IDisposable
                 {
                     "JoinCode", new DataObject(
                         visibility: DataObject.VisibilityOptions.Member,
-                        value: joinCode
+                        value: JoinCode
                         )
                 }
             };
@@ -106,7 +112,7 @@ public class HostGameManager : IDisposable
             return;
         }
 
-        NetworkServer = new NetworkServer(NetworkManager.Singleton);
+        NetworkServer = new NetworkServer(NetworkManager.Singleton, playerPrefab);
         
         UserData userData = new UserData
         {
