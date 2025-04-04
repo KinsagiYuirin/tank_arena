@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 
 public class NetworkServer : IDisposable
 {
     private NetworkManager networkManager;
     private NetworkObject playerPrefab;
+
+    public Action<UserData> OnUserJoined;
+    public Action<UserData> OnUserLeft;
     
     public Action<string> OnClientLeft;
 
@@ -50,6 +54,13 @@ public class NetworkServer : IDisposable
         networkManager.ConnectionApprovalCallback += ApprovalCheck;
         networkManager.OnServerStarted += OnNetworkReady;
     }
+
+    public bool OpenConnection(string ip, int port)
+    {
+        UnityTransport transport = networkManager.gameObject.GetComponent<UnityTransport>();
+        transport.SetConnectionData(ip, (ushort)port);
+        return networkManager.StartServer();
+    }
     
     private void OnNetworkReady()
     {
@@ -70,6 +81,7 @@ public class NetworkServer : IDisposable
         if (clientIdToAuth.TryGetValue(clientId, out string authId))
         {
             clientIdToAuth.Remove(clientId);
+            OnUserLeft?.Invoke(authIdToUserData[authId]);
             authIdToUserData.Remove(authId);
             OnClientLeft?.Invoke(authId);
         }
@@ -84,6 +96,7 @@ public class NetworkServer : IDisposable
 
         clientIdToAuth[request.ClientNetworkId] = userData.userAuthId;
         authIdToUserData[userData.userAuthId] = userData;
+        OnUserJoined?.Invoke(userData);
         
         _ = SpawnPlayerDelayed(request.ClientNetworkId);
         
