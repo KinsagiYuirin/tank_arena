@@ -10,18 +10,18 @@ using UnityEngine;
 
 public class MultiplayAllocationService : IDisposable
 {
-#if UNITY_SERVER
+    #if UNITY_SERVER
     private IMultiplayService multiplayService;
     private MultiplayEventCallbacks serverCallbacks;
     private IServerQueryHandler serverCheckManager;
     private IServerEvents serverEvents;
     private CancellationTokenSource serverCheckCancel;
     string allocationId;
-#endif    
+    #endif
+
     public MultiplayAllocationService()
     {
-#if UNITY_SERVER
-        
+        #if UNITY_SERVER
         try
         {
             multiplayService = MultiplayService.Instance;
@@ -31,9 +31,8 @@ public class MultiplayAllocationService : IDisposable
         {
             Debug.LogWarning($"Error creating Multiplay allocation service.\n{ex}");
         }
-#endif
+        #endif
     }
-
 #if UNITY_SERVER
     public async Task<MatchmakingResults> SubscribeAndAwaitMatchmakerAllocation()
     {
@@ -76,12 +75,15 @@ public class MultiplayAllocationService : IDisposable
         return allocationId;
     }
 
+
     private async Task<MatchmakingResults> GetMatchmakerAllocationPayloadAsync()
     {
+       
         MatchmakingResults payloadAllocation = await MultiplayService.Instance.GetPayloadAllocationFromJsonAs<MatchmakingResults>();
         string modelAsJson = JsonConvert.SerializeObject(payloadAllocation, Formatting.Indented);
         Debug.Log(nameof(GetMatchmakerAllocationPayloadAsync) + ":" + Environment.NewLine + modelAsJson);
         return payloadAllocation;
+        
     }
 
     private void OnMultiplayAllocation(MultiplayAllocation allocation)
@@ -159,7 +161,7 @@ public class MultiplayAllocationService : IDisposable
 
     public void Dispose()
     {
-#if UNITY_SERVER
+        #if UNITY_SERVER
         if (serverCallbacks != null)
         {
             serverCallbacks.Allocate -= OnMultiplayAllocation;
@@ -173,6 +175,6 @@ public class MultiplayAllocationService : IDisposable
         }
 
         serverEvents?.UnsubscribeAsync();
-#endif
+        #endif
     }
 }

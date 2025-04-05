@@ -1402,7 +1402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   queueStatusText: {fileID: 1665374300}
-  joinTimerText: {fileID: 1937236032}
+  queueTimerText: {fileID: 1937236032}
   findMatchButtonText: {fileID: 904981911}
   joinCodeField: {fileID: 1965267056}
 --- !u!1 &605216487

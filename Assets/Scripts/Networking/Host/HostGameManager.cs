@@ -31,34 +31,6 @@ public class HostGameManager : IDisposable
     {
         this.playerPrefab = playerPrefab;
     }
-
-
-    public void Dispose()
-    {
-        Shutdown();
-    }
-    
-    public async void Shutdown()
-    {
-        if (string.IsNullOrEmpty(lobbyId)) {return;}
-            
-        HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
-
-        try
-        {
-            await LobbyService.Instance.DeleteLobbyAsync(lobbyId);
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
-
-        lobbyId = string.Empty;
-            
-        NetworkServer.OnClientLeft -= HandleClientLeft;
-        
-        NetworkServer?.Dispose();
-    }
     
     public async Task StartHostAsync()
     {
@@ -153,5 +125,32 @@ public class HostGameManager : IDisposable
             LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
             yield return delay;
         }
-    }
+    }   
+    
+    public void Dispose()
+     {
+         Shutdown();
+     }
+     
+     public async void Shutdown()
+     {
+         if (string.IsNullOrEmpty(lobbyId)) {return;}
+             
+         HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
+ 
+         try
+         {
+             await LobbyService.Instance.DeleteLobbyAsync(lobbyId);
+         }
+         catch (LobbyServiceException e)
+         {
+             Debug.Log(e);
+         }
+ 
+         lobbyId = string.Empty;
+             
+         NetworkServer.OnClientLeft -= HandleClientLeft;
+         
+         NetworkServer?.Dispose();
+     }
 }

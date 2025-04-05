@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class ApplicationController : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class ApplicationController : MonoBehaviour
     private async void Start()
     {
         DontDestroyOnLoad(gameObject);
-        await LaunchInMode(SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null);
+        await LaunchInMode(SystemInfo.graphicsDeviceType == GraphicsDeviceType.Null);
     }
     
     private async Task LaunchInMode(bool isDedicatedServer)
@@ -25,11 +26,8 @@ public class ApplicationController : MonoBehaviour
         if (isDedicatedServer)
         {
             Application.targetFrameRate = 60;
-            
             appData = new ApplicationData();
-            
             ServerSingleton serverSingleton = Instantiate(serverPrefab);
-
             StartCoroutine(LoadGameSceneAsync(serverSingleton));
         }
         else
@@ -55,13 +53,13 @@ public class ApplicationController : MonoBehaviour
         {
             yield return null;
         }
-#if UNITY_SERVER
+        #if UNITY_SERVER
         Task createServerTask = serverSingleton.CreateServer(playerPrefab);
         yield return new WaitUntil(() => createServerTask.IsCompleted);
 
         Task startServerTask = serverSingleton.GameManager.StartGameServerAsync();
         yield return new WaitUntil(() => startServerTask.IsCompleted);
-#endif
+        #endif
     }
 
 }

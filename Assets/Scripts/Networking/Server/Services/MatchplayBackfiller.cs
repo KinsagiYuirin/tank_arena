@@ -1,12 +1,15 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+#if UNITY_SERVER
 using Unity.Services.Matchmaker;
 using Unity.Services.Matchmaker.Models;
+#endif
 using UnityEngine;
 
 public class MatchplayBackfiller : IDisposable
 {
+    #if UNITY_SERVER
     private CreateBackfillTicketOptions createBackfillOptions;
     private BackfillTicket localBackfillTicket;
     private bool localDataDirty;
@@ -143,9 +146,12 @@ public class MatchplayBackfiller : IDisposable
             await Task.Delay(TicketCheckMs);
         }
     }
+#endif
 
     public void Dispose()
     {
+        #if UNITY_SERVER
         _ = StopBackfill();
+        #endif
     }
 }
